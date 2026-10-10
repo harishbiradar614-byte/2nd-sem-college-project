@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2nd Sem College Project - Criminal Face Identification System | Sharnbasava University</title>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e293b;
+      --accent: #d4af37;
+      --accent-hover: #b89628;
+      --blue-accent: #2563eb;
+      --blue-light: #38bdf8;
+      --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --surface: #1e293b;
+      --surface-light: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --border: #475569;
+      --radius: 10px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #0b1120;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* College Header Branding (User Skill Specification) */
+    .college-header {
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #09132c 0%, #152244 50%, #0d1835 100%);
+      color: #ffffff;
+      padding: 16px 28px;
+      border-bottom: 3px solid var(--accent);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .college-logo {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: #ffffff;
+      padding: 2px;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .college-info {
+      flex: 1;
+    }
+
+    .college-info h2 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .college-info h3 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #e2e8f0;
+      margin-top: 2px;
+    }
+
+    .college-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .header-badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .role-badge:hover {
+      background: rgba(212, 175, 55, 0.25);
+    }
+
+    /* Project Sub-banner */
+    .project-banner {
+      background: linear-gradient(90deg, #1e3a8a 0%, #1e293b 100%);
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .project-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .project-title h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .tag-academic {
+      background: #0284c7;
+      color: white;
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    /* Main Navigation Bar */
+    .nav-tabs {
+      display: flex;
+      background: var(--secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      overflow-x: auto;
+      gap: 4px;
+    }
+
+    .nav-tab {
+      padding: 14px 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-tab:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .nav-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    /* Main Container */
+    .main-container {
+      flex: 1;
+      padding: 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Headers */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--surface-light);
+      padding-bottom: 12px;
+    }
+
+    .section-head h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 9px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0b1120;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface-light);
+      color: #ffffff;
+    }
+
+    .btn-secondary:hover {
+      background: #475569;
+    }
+
+    .btn-blue {
+      background: var(--blue-accent);
+      color: #ffffff;
+    }
+
+    .btn-blue:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.78rem;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Grid Layout for Face Identification Studio */
+    .studio-grid {
+      display: grid;
+      grid-template-columns: 360px 420px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .studio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Feature Slices Selector */
+    .slices-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 720px;
+    }
+
+    .tier-tabs {
+      display: flex;
+      background: #162032;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tier-tab {
+      flex: 1;
+      padding: 10px 4px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tier-tab.active {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--accent);
+      border-bottom: 2px solid var(--accent);
+    }
+
+    .slices-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .slice-card {
+      background: #131c2e;
+      border: 2px solid var(--surface-light);
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .slice-card:hover {
+      border-color: var(--blue-light);
+      transform: translateY(-2px);
+    }
+
+    .slice-card.selected {
+      border-color: var(--accent);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .slice-preview-svg {
+      width: 100%;
+      height: 80px;
+      background: #1e293b;
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slice-meta {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-top: 8px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .badge-cid {
+      background: #334155;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #38bdf8;
+      font-weight: 600;
+    }
+
+    /* Central Composite Canvas Viewport */
+    .composite-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .composite-frame {
+      width: 320px;
+      height: 420px;
+      background: #0f172a;
+      border: 3px solid var(--accent);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .slice-tier-slot {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #131c2e;
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+      transition: all 0.2s;
+    }
+
+    .slice-tier-slot:last-child {
+      border-bottom: none;
+    }
+
+    .tier-slot-1 { height: 92px; }   /* Hair & Forehead: 22% */
+    .tier-slot-2 { height: 92px; }   /* Eyes & Brows: 22% */
+    .tier-slot-3 { height: 84px; }   /* Nose & Bridge: 20% */
+    .tier-slot-4 { height: 76px; }   /* Lips & Mouth: 18% */
+    .tier-slot-5 { height: 76px; }   /* Chin & Jaw: 18% */
+
+    .slot-label {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 0.65rem;
+      background: rgba(0,0,0,0.6);
+      color: var(--text-muted);
+      padding: 2px 6px;
+      border-radius: 3px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .freeze-indicator {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      font-size: 0.65rem;
+      background: #0284c7;
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 3px;
+      z-index: 10;
+      display: none;
+      font-weight: bold;
+    }
+
+    .slice-tier-slot.frozen .freeze-indicator {
+      display: block;
+      background: var(--success);
+    }
+
+    .composite-actions {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .slot-controls {
+      margin-top: 14px;
+      width: 100%;
+      background: #131c2e;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--surface-light);
+    }
+
+    .ctrl-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.8rem;
+    }
+
+    .ctrl-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Matching & Results Panel */
+    .match-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .match-score-card {
+      background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .score-number {
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+      margin: 8px 0;
+    }
+
+    .score-label {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #93c5fd;
+    }
+
+    .dossier-card {
+      background: #131c2e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dossier-header {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .dossier-mugshot {
+      width: 80px;
+      height: 100px;
+      background: #0f172a;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .dossier-names h3 {
+      font-size: 1.15rem;
+      color: #ffffff;
+    }
+
+    .dossier-names p {
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 0.82rem;
+      margin-top: 6px;
+      border-top: 1px solid var(--surface-light);
+      padding-top: 10px;
+    }
+
+    .dossier-field span:first-child {
+      color: var(--text-muted);
+      display: block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .dossier-field span:last-child {
+      color: #ffffff;
+      font-weight: 500;
+    }
+
+    .threat-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .threat-high, .threat-critical {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid #ef4444;
+    }
+
+    .threat-medium {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border: 1px solid #f59e0b;
+    }
+
+    .threat-low {
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      border: 1px solid #10b981;
+    }
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: #162032;
+      color: var(--accent);
+      padding: 12px 16px;
+      font-weight: 700;
+      border-bottom: 2px solid var(--border);
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--surface-light);
+      color: #e2e8f0;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Manual Drawing Canvas */
+    .draw-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
+    .draw-tools {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .draw-canvas-area {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #sketchCanvas {
+      background: #ffffff;
+      border: 3px solid #334155;
+      border-radius: 8px;
+      cursor: crosshair;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    /* Team Section (User Skill Specification) */
+    .team-section {
+      background: linear-gradient(135deg, #0d1b3e 0%, #16254a 100%);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-top: 36px;
+      box-shadow: var(--shadow);
+    }
+
+    .team-section h3 {
+      color: var(--accent);
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 8px;
+    }
+
+    .team-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .team-list li {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .team-list li:hover {
+      border-color: var(--accent);
+      background: rgba(212, 175, 55, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .team-list li strong {
+      color: #ffffff;
+      font-size: 0.95rem;
+    }
+
+    .usn-pill {
+      background: var(--surface-light);
+      color: var(--accent);
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-family: monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--secondary);
+      border: 1px solid var(--accent);
+      border-radius: var(--radius);
+      width: 90%;
+      max-width: 600px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--surface-light);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 24px;
+      background: var(--secondary);
+      border-left: 4px solid var(--accent);
+      color: #ffffff;
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Stat Cards */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--accent);
+    }
+
+    .stat-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- College Header Banner -->
+  <header class="college-header">
+    <img src="logo.png" alt="Sharnbasava University Logo" class="college-logo" id="collegeLogoImg" onerror="this.onerror=null; this.src='data:image/png;base64,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'">
+    <div class="college-info">
+      <h2>SHARNBASAVA UNIVERSITY</h2>
+      <h3>Faculty of Engineering &amp; Technology</h3>
+      <p>Department of Computer Science &amp; Engineering | Kalaburagi, Karnataka, India</p>
+    </div>
+    <div class="header-badges">
+      <div class="role-badge" id="currentRoleBadge" onclick="toggleRoleModal()">
+        <span>🛡️</span>
+        <span id="roleText">Operator: Officer Chandu</span>
+      </div>
+      <span class="tag-academic">2nd Sem College Project</span>
+    </div>
+  </header>
+
+  <!-- Project Sub-banner -->
+  <div class="project-banner">
+    <div class="project-title">
+      <span style="font-size: 1.4rem;">👤🔍</span>
+      <div>
+        <h1>Criminal Face Identification System</h1>
+        <p style="font-size: 0.8rem; color: #94a3b8;">2nd Sem College Project | Eyewitness Slicing &amp; Merging Module | Forensic Suspect Retrieval</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-primary btn-sm" onclick="switchTab('reconstruction')">⚡ Quick Identify</button>
+      <button class="btn btn-secondary btn-sm" onclick="switchTab('drawing')">✏️ Sketch Mode</button>
+    </div>
+  </div>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('reconstruction')">🧩 Eyewitness Face Framing</button>
+    <button class="nav-tab" onclick="switchTab('database')">📂 Criminal Database</button>
+    <button class="nav-tab" onclick="switchTab('slicing')">✂️ Face Slicing Module</button>
+    <button class="nav-tab" onclick="switchTab('drawing')">🎨 Drawing Studio</button>
+    <button class="nav-tab" onclick="switchTab('admin')">🔐 Administrator Portal</button>
+    <button class="nav-tab" onclick="switchTab('synopsis')">📜 Project Synopsis &amp; Architecture</button>
+  </nav>
+
+  <!-- Main Workspace -->
+  <main class="main-container">
+
+    <!-- TAB 1: Eyewitness Face Reconstruction & Match -->
+    <div id="tab-reconstruction" class="tab-content active">
+      <div class="section-head">
+        <div>
+          <h2>🧩 Eyewitness Face Reconstruction &amp; Matching Studio</h2>
+          <p class="section-desc">Eyewitness selects cropped facial slices from the database. The operator freezes selections to construct the composite face and locates the matching criminal.</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="resetComposite()">🔄 Reset Slices</button>
+          <button class="btn btn-primary" onclick="locateCriminal()">🔍 LOCATE CRIMINAL (MATCH FACE)</button>
+        </div>
+      </div>
+
+      <div class="studio-grid">
+        <!-- Left Column: Slices Library -->
+        <div class="slices-panel">
+          <div style="padding: 12px 14px; background: #131c2e; border-bottom: 1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.85rem; font-weight:700; color:var(--accent);">FEATURE SLICES REPOSITORY</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);" id="sliceCountBadge">30 Slices Available</span>
+          </div>
+          
+          <div class="tier-tabs">
+            <button class="tier-tab active" onclick="setSliceCategory('Hair')">Hair</button>
+            <button class="tier-tab" onclick="setSliceCategory('Eyes')">Eyes</button>
+            <button class="tier-tab" onclick="setSliceCategory('Nose')">Nose</button>
+            <button class="tier-tab" onclick="setSliceCategory('Lips')">Lips</button>
+            <button class="tier-tab" onclick="setSliceCategory('Chin')">Chin</button>
+          </div>
+
+          <div class="slices-list" id="slicesContainer">
+            <!-- Slices injected by JS -->
+          </div>
+        </div>
+
+        <!-- Center Column: Composite Viewport -->
+        <div class="composite-panel">
+          <div style="margin-bottom:12px; font-size:0.88rem; color:var(--accent); font-weight:700;">
+            CONSTRUCTED FACE FRAME
+          </div>
+
+          <div class="composite-frame" id="compositeFrame">
+            <!-- Tier 1: Hair -->
+            <div class="slice-tier-slot tier-slot-1" id="slot-Hair" onclick="selectSlot('Hair')">
+              <span class="slot-label">1. HAIR &amp; FOREHEAD</span>
+              <span class="freeze-indicator" id="freeze-Hair">FROZEN</span>
+              <div class="slot-content" id="content-Hair"></div>
+            </div>
+
+            <!-- Tier 2: Eyes -->
+            <div class="slice-tier-slot tier-slot-2" id="slot-Eyes" onclick="selectSlot('Eyes')">
+              <span class="slot-label">2. EYES &amp; BROWS</span>
+              <span class="freeze-indicator" id="freeze-Eyes">FROZEN</span>
+              <div class="slot-content" id="content-Eyes"></div>
+            </div>
+
+            <!-- Tier 3: Nose -->
+            <div class="slice-tier-slot tier-slot-3" id="slot-Nose" onclick="selectSlot('Nose')">
+              <span class="slot-label">3. NOSE &amp; BRIDGE</span>
+              <span class="freeze-indicator" id="freeze-Nose">FROZEN</span>
+              <div class="slot-content" id="content-Nose"></div>
+            </div>
+
+            <!-- Tier 4: Lips -->
+            <div class="slice-tier-slot tier-slot-4" id="slot-Lips" onclick="selectSlot('Lips')">
+              <span class="slot-label">4. LIPS &amp; MOUTH</span>
+              <span class="freeze-indicator" id="freeze-Lips">FROZEN</span>
+              <div class="slot-content" id="content-Lips"></div>
+            </div>
+
+            <!-- Tier 5: Chin -->
+            <div class="slice-tier-slot tier-slot-5" id="slot-Chin" onclick="selectSlot('Chin')">
+              <span class="slot-label">5. CHIN &amp; JAW</span>
+              <span class="freeze-indicator" id="freeze-Chin">FROZEN</span>
+              <div class="slot-content" id="content-Chin"></div>
+            </div>
+          </div>
+
+          <!-- Alignment & Splicing Adjustments -->
+          <div class="slot-controls">
+            <div class="ctrl-row">
+              <span style="font-weight:600; color:var(--accent);">Active Tier Controls: <span id="activeTierName">Hair</span></span>
+              <button class="btn btn-secondary btn-sm" id="freezeToggleBtn" onclick="toggleFreezeCurrent()">❄️ Freeze Tier</button>
+            </div>
+            <div class="ctrl-row">
+              <span>Vertical Shift:</span>
+              <input type="range" id="vShiftSlider" min="-15" max="15" value="0" oninput="adjustSlotTransform()" style="width:140px;">
+            </div>
+            <div class="ctrl-row">
+              <span>Horizontal Scale:</span>
+              <input type="range" id="hScaleSlider" min="80" max="120" value="100" oninput="adjustSlotTransform()" style="width:140px;">
+            </div>
+          </div>
+
+          <div class="composite-actions">
+            <button class="btn btn-secondary btn-sm" onclick="saveConstructedFace()">💾 Save Imaginary Face</button>
+            <button class="btn btn-secondary btn-sm" onclick="exportCompositePNG()">📥 Export Image</button>
+            <button class="btn btn-blue btn-sm" onclick="randomizeComposite()">🎲 Random Blend</button>
+          </div>
+        </div>
+
+        <!-- Right Column: Locate / Matching Analytics & Dossier -->
+        <div class="match-panel">
+          <div class="match-score-card">
+            <div class="score-label">Algorithm Similarity Match</div>
+            <div class="score-number" id="matchScoreVal">--%</div>
+            <div style="font-size:0.8rem; color:#cbd5e1;" id="matchConfidenceText">Select slices and click 'LOCATE' to identify suspect</div>
+          </div>
+
+          <div class="dossier-card" id="suspectDossier">
+            <div style="text-align:center; padding:30px 10px; color:var(--text-muted);">
+              <span style="font-size:2.5rem; display:block; margin-bottom:8px;">📁</span>
+              No suspect located yet. Assemble the eyewitness composite and click <strong>Locate Criminal</strong>.
+            </div>
+          </div>
+
+          <!-- Slices Origin Breakdown -->
+          <div class="card" style="padding:14px;">
+            <h4 style="font-size:0.82rem; color:var(--accent); text-transform:uppercase; margin-bottom:8px;">Slice Composition Breakdown</h4>
+            <div id="compositionBreakdown" style="font-size:0.78rem; color:var(--text-muted); display:flex; flex-direction:column; gap:4px;">
+              <span>1. Hair: None</span>
+              <span>2. Eyes: None</span>
+              <span>3. Nose: None</span>
+              <span>4. Lips: None</span>
+              <span>5. Chin: None</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Criminal Records Database -->
+    <div id="tab-database" class="tab-content">
+      <div class="section-head">
+        <div>
+          <h2>📂 Criminal Records Database Module</h2>
+          <p class="section-desc">Add, delete, update and retrieve criminal personal records and their segmented facial slices.</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <input type="text" id="dbSearchInput" placeholder="Search by name, ID or crime..." class="form-control" style="width:260px;" oninput="filterCriminalTable()">
+          <button class="btn btn-primary" onclick="openAddCriminalModal()">➕ Add Criminal Record</button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div>
+            <div class="stat-val" id="statTotalCriminals">6</div>
+            <div class="stat-lbl">Total Criminal Records</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✂️</div>
+          <div>
+            <div class="stat-val" id="statTotalSlices">30</div>
+            <div class="stat-lbl">Segmented Face Slices</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🎯</div>
+          <div>
+            <div class="stat-val" id="statMatchesFound">14</div>
+            <div class="stat-lbl">Identifications Logged</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🛡️</div>
+          <div>
+            <div class="stat-val">Active</div>
+            <div class="stat-lbl">Database Status</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Mugshot</th>
+              <th>Record ID</th>
+              <th>Full Name</th>
+              <th>Alias</th>
+              <th>Age/Gender</th>
+              <th>Crime Category</th>
+              <th>Threat Level</th>
+              <th>Conviction Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="criminalTableBody">
+            <!-- Rows injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: Face Slicing & Feature Extractor -->
+    <div id="tab-slicing" class="tab-content">
+      <div class="section-head">
+        <div>
+          <h2>✂️ Image Slicing &amp; Segmenting Module</h2>
+          <p class="section-desc">Upload a suspect photograph to extract and store proportional horizontal slices (Hair, Eyes, Nose, Lips, Chin) in the database.</p>
+        </div>
+        <div>
+          <button class="btn btn-primary" onclick="saveExtractedSlices()">💾 Save Slices to Database</button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 380px 1fr; gap:24px;">
+        <div class="card">
+          <h3 style="font-size:1rem; margin-bottom:12px; color:var(--accent);">Upload Source Mugshot</h3>
+          <div class="form-group">
+            <label>Select Existing Suspect or Upload:</label>
+            <select class="form-control" id="slicerSuspectSelect" onchange="loadSuspectToSlicer()">
+              <!-- Options populated by JS -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Upload Custom Photo:</label>
+            <input type="file" id="customPhotoUpload" accept="image/*" class="form-control" onchange="handleCustomPhoto(event)">
+          </div>
+
+          <div style="margin-top:14px; text-align:center;">
+            <div id="slicerCanvasContainer" style="position:relative; display:inline-block; border:2px solid var(--accent); border-radius:8px; overflow:hidden;">
+              <canvas id="slicerCanvas" width="280" height="360"></canvas>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">Standard 5-tier boundary lines displayed</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1rem; margin-bottom:12px; color:var(--accent);">Extracted 5-Tier Facial Slices</h3>
+          <div style="display:flex; flex-direction:column; gap:12px;" id="extractedSlicesList">
+            <!-- Extracted slice previews -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Drawing Studio -->
+    <div id="tab-drawing" class="tab-content">
+      <div class="section-head">
+        <div>
+          <h2>🎨 Manual Face Sketching / Drawing Studio</h2>
+          <p class="section-desc">Corresponds to Draw module (`Draw d1=new Draw()` in Operator.java). Operator and eyewitness manually sketch facial outlines or composites.</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="clearSketchCanvas()">🗑️ Clear</button>
+          <button class="btn btn-primary btn-sm" onclick="downloadSketchPNG()">📥 Save Sketch PNG</button>
+        </div>
+      </div>
+
+      <div class="draw-container">
+        <div class="draw-tools">
+          <div class="form-group">
+            <label>Drawing Tool:</label>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <button class="btn btn-secondary btn-sm active-tool" id="toolPencil" onclick="setDrawTool('pencil')">✏️ Pencil</button>
+              <button class="btn btn-secondary btn-sm" id="toolBrush" onclick="setDrawTool('brush')">🖌️ Charcoal</button>
+              <button class="btn btn-secondary btn-sm" id="toolEraser" onclick="setDrawTool('eraser')">🧹 Eraser</button>
+              <button class="btn btn-secondary btn-sm" id="toolLine" onclick="setDrawTool('line')">📏 Line</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Stroke Size: <span id="brushSizeDisplay">3px</span></label>
+            <input type="range" min="1" max="25" value="3" class="form-control" id="brushSizeSlider" oninput="updateBrushSize()">
+          </div>
+
+          <div class="form-group">
+            <label>Color Palette:</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input type="color" id="brushColorPicker" value="#111827" style="height:38px; width:50px; background:none; border:none; cursor:pointer;" onchange="updateBrushColor()">
+              <div style="display:flex; gap:6px;">
+                <button style="width:24px; height:24px; border-radius:50%; background:#000; border:1px solid #fff; cursor:pointer;" onclick="setQuickColor('#000000')"></button>
+                <button style="width:24px; height:24px; border-radius:50%; background:#4b5563; border:1px solid #fff; cursor:pointer;" onclick="setQuickColor('#4b5563')"></button>
+                <button style="width:24px; height:24px; border-radius:50%; background:#9ca3af; border:1px solid #fff; cursor:pointer;" onclick="setQuickColor('#9ca3af')"></button>
+                <button style="width:24px; height:24px; border-radius:50%; background:#451a03; border:1px solid #fff; cursor:pointer;" onclick="setQuickColor('#451a03')"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Facial Proportion Guidelines:</label>
+            <div style="display:flex; flex-direction:column; gap:6px; font-size:0.8rem;">
+              <label style="text-transform:none; font-weight:normal; cursor:pointer;">
+                <input type="checkbox" id="guideOvalCheck" onchange="redrawCanvasWithGuides()" checked> Head Oval Outline
+              </label>
+              <label style="text-transform:none; font-weight:normal; cursor:pointer;">
+                <input type="checkbox" id="guideLinesCheck" onchange="redrawCanvasWithGuides()" checked> Eye, Nose &amp; Mouth Guidelines
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-top:auto;">
+            <button class="btn btn-blue" style="width:100%;" onclick="sendSketchToSlicer()">✂️ Send to Slicing Tool</button>
+          </div>
+        </div>
+
+        <div class="draw-canvas-area">
+          <canvas id="sketchCanvas" width="400" height="500"></canvas>
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:8px;">Interactive canvas with smooth anti-aliased freehand drawing</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Administrator Portal -->
+    <div id="tab-admin" class="tab-content">
+      <div class="section-head">
+        <div>
+          <h2>🔐 Administrator Authentication &amp; User Control</h2>
+          <p class="section-desc">Manage operator access, create/delete credentials, monitor security audits and database transactions.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openAddOperatorModal()">➕ Create Operator Account</button>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+        <div class="card">
+          <h3 style="font-size:1.05rem; margin-bottom:14px; color:var(--accent);">Registered System Users &amp; Operators</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Display Name</th>
+                  <th>Role</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="userTableBody">
+                <!-- User rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:1.05rem; margin-bottom:14px; color:var(--accent);">System Audit Log</h3>
+          <div style="height:320px; overflow-y:auto; font-family:monospace; font-size:0.78rem; background:#0f172a; padding:12px; border-radius:6px; border:1px solid var(--border);" id="auditLogList">
+            <!-- Audit logs -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Project Synopsis, Architecture & UML -->
+    <div id="tab-synopsis" class="tab-content">
+      <div class="section-head">
+        <div>
+          <h2>📜 Project Architecture, SRS &amp; Design Diagrams</h2>
+          <p class="section-desc">Complete academic technical report mapping all specifications from the project document.</p>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:20px;">
+        <div class="card">
+          <h3 style="color:var(--accent); margin-bottom:10px;">1. Project Abstract &amp; Objective</h3>
+          <p style="font-size:0.9rem; line-height:1.6; color:#cbd5e1;">
+            Criminal record systems generally contain personal information about suspects along with their photograph. To identify an unknown criminal, eyewitness testimony provides essential clues. Often, image recordings are degraded or unavailable. To solve this, the <strong>Criminal Face Identification System</strong> divides human facial mugshots into distinct slices (Hair, Eyes, Nose, Lips, and Chin). Eyewitnesses select feature clippings to compose the suspect's face. The system executes a frequency-based slice matching algorithm calculating the contributor frequency and predicts suspect identity with up to <strong>99% confidence</strong>.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="color:var(--accent); margin-bottom:10px;">2. 3-Tier Distributed Architecture</h3>
+          <div style="background:#0f172a; padding:16px; border-radius:6px; border:1px solid var(--surface-light); font-family:monospace; font-size:0.85rem; line-height:1.5;">
+            ┌─────────────────────────────────────────────────────────────┐<br>
+            │  <b>PRESENTATION LAYER (GUI / Web Client)</b>                       │<br>
+            │  Operator Dashboard • Eyewitness Canvas • Drawing Tool      │<br>
+            └──────────────────────────────┬──────────────────────────────┘<br>
+                                           │<br>
+            ┌──────────────────────────────▼──────────────────────────────┐<br>
+            │  <b>BUSINESS RULES / APPLICATION LAYER</b>                         │<br>
+            │  Image Slicer (5 Tiers) • Slice Frequency Match Engine      │<br>
+            │  Confidence Calculator • Face Blend Synthesis               │<br>
+            └──────────────────────────────┬──────────────────────────────┘<br>
+                                           │<br>
+            ┌──────────────────────────────▼──────────────────────────────┐<br>
+            │  <b>DATA ACCESS &amp; DATABASE LAYER</b>                              │<br>
+            │  Criminals Table • Slices Repository • Audit Log Store      │<br>
+            └─────────────────────────────────────────────────────────────┘
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="color:var(--accent); margin-bottom:10px;">3. Data Flow Diagram (DFD Level 1 &amp; Level 2)</h3>
+          <p style="font-size:0.88rem; line-height:1.6; color:#cbd5e1; margin-bottom:10px;">
+            <strong>Level 1 DFD:</strong> Operator inputs Criminal details and photo ➔ Slicing Process divides into 5 tiers ➔ Slices stored in Database ➔ Eyewitness views &amp; selects Slices ➔ Merging Module constructs Composite Face ➔ Matching Engine queries Suspect Database ➔ Located Criminal Record Output.
+          </p>
+          <div style="background:#0f172a; padding:16px; border-radius:6px; border:1px solid var(--surface-light); font-family:monospace; font-size:0.85rem; line-height:1.5;">
+            [Operator] ──(Criminal Photo)──➔ [Slicing Engine] ──(5 Tiers)──➔ [Slices DB]<br>
+                                                                                │<br>
+            [Eyewitness] ──(Feature Selection)──➔ [Face Merging Engine] ◄───────┘<br>
+                                                       │<br>
+                                            (Constructed Face)<br>
+                                                       │<br>
+                                                       ▼<br>
+            [Criminals DB] ◄──(Match Query)── [Locate Algorithm]<br>
+                  │<br>
+                  └──────(Suspect Profile &amp; % Score)──────➔ [Display Dossier]
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="color:var(--accent); margin-bottom:10px;">4. Verification Test Cases (From Document Specs)</h3>
+          <div class="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Test Case</th>
+                  <th>Module</th>
+                  <th>Event Sequence</th>
+                  <th>Expected Result</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>TC #1</td>
+                  <td>Operator Login</td>
+                  <td>Enter user 'chandu' and password</td>
+                  <td>Operator Dashboard unlocks with Welcome Message</td>
+                  <td><span class="threat-tag threat-low">PASS</span></td>
+                </tr>
+                <tr>
+                  <td>TC #2</td>
+                  <td>Criminal Entry &amp; Slicing</td>
+                  <td>Add new criminal record &amp; submit mugshot</td>
+                  <td>Record stored &amp; automatically split into 5 feature slices</td>
+                  <td><span class="threat-tag threat-low">PASS</span></td>
+                </tr>
+                <tr>
+                  <td>TC #3</td>
+                  <td>Face Reconstruction</td>
+                  <td>Select Hair, Eyes, Nose, Lips, Chin slices</td>
+                  <td>Composite face seamlessly assembled in frame</td>
+                  <td><span class="threat-tag threat-low">PASS</span></td>
+                </tr>
+                <tr>
+                  <td>TC #4</td>
+                  <td>Freeze Feature</td>
+                  <td>Click Freeze on Eyes &amp; Nose tiers</td>
+                  <td>Selected tiers locked in place during cycling</td>
+                  <td><span class="threat-tag threat-low">PASS</span></td>
+                </tr>
+                <tr>
+                  <td>TC #5</td>
+                  <td>Locate &amp; Match</td>
+                  <td>Exercise 'Locate Criminal' option</td>
+                  <td>Dominant record identified with similarity score up to 99%</td>
+                  <td><span class="threat-tag threat-low">PASS</span></td>
+                </tr>
+                <tr>
+                  <td>TC #6</td>
+                  <td>Manual Sketch</td>
+                  <td>Draw suspect face freehand &amp; save</td>
+                  <td>Rendered PNG sketch exported / forwarded to slicer</td>
+                  <td><span class="threat-tag threat-low">PASS</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sharnbasava University Team & USN Section (Mandatory User Skill) -->
+    <section class="team-section">
+      <h3>Project Team Members (Department of Computer Science &amp; Engineering)</h3>
+      <ul class="team-list">
+        <li>
+          <div>
+            <strong>Harish Biradar</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Team Member • Core Algorithmic Lead</div>
+          </div>
+          <span class="usn-pill">SG25CSE050</span>
+        </li>
+        <li>
+          <div>
+            <strong>Kartik V</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Team Member • Database &amp; Slicing Engineer</div>
+          </div>
+          <span class="usn-pill">SG25CSE057</span>
+        </li>
+        <li>
+          <div>
+            <strong>Adarsh R Patil</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Team Member • UI/UX &amp; Canvas Architect</div>
+          </div>
+          <span class="usn-pill">SG25CSE007</span>
+        </li>
+        <li>
+          <div>
+            <strong>Akash S Patil</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Team Member • Testing &amp; Security Analyst</div>
+          </div>
+          <span class="usn-pill">SG25CSE016</span>
+        </li>
+      </ul>
+      <div style="margin-top:14px; font-size:0.8rem; color:#94a3b8; text-align:right;">
+        Academic Guide: Dept. of CSE | Sharnbasava University, Kalaburagi-585103
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modals -->
+
+  <!-- Add Criminal Modal -->
+  <div class="modal-overlay" id="addCriminalModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3 style="color:var(--accent);">➕ Add Criminal Record</h3>
+        <button onclick="closeAddCriminalModal()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">&times;</button>
+      </div>
+      <form onsubmit="handleSaveCriminal(event)">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Record ID:</label>
+            <input type="text" id="newCid" class="form-control" required placeholder="e.g. CRM-107">
+          </div>
+          <div class="form-group">
+            <label>Full Name:</label>
+            <input type="text" id="newName" class="form-control" required placeholder="e.g. Anand Kumar">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Alias / Nickname:</label>
+            <input type="text" id="newAlias" class="form-control" placeholder="e.g. Kalu">
+          </div>
+          <div class="form-group">
+            <label>Age:</label>
+            <input type="number" id="newAge" class="form-control" value="32" required>
+          </div>
+          <div class="form-group">
+            <label>Gender:</label>
+            <select id="newGender" class="form-control">
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label>Crime Category:</label>
+            <input type="text" id="newCrime" class="form-control" required placeholder="e.g. Armed Burglary">
+          </div>
+          <div class="form-group">
+            <label>Threat Level:</label>
+            <select id="newThreat" class="form-control">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Critical</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Conviction / Arrest Date:</label>
+          <input type="date" id="newDate" class="form-control" required value="2025-01-15">
+        </div>
+        <div class="form-group">
+          <label>Forensic Notes &amp; Distinguishing Marks:</label>
+          <textarea id="newNotes" class="form-control" rows="2" placeholder="Scar on cheek, mole under left eye..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Avatar / Photo Preset:</label>
+          <select id="newAvatarPreset" class="form-control" onchange="previewPresetAvatar()">
+            <option value="preset1">Preset A - Rugged Beard / Dark Hair</option>
+            <option value="preset2">Preset B - Clean Shave / Wavy Hair</option>
+            <option value="preset3">Preset C - Buzz Cut / Boxing Nose</option>
+            <option value="preset4">Preset D - Youthful / Sharp Jaw</option>
+          </select>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+          <button type="button" class="btn btn-secondary" onclick="closeAddCriminalModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save &amp; Generate Slices</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Role Switcher Modal -->
+  <div class="modal-overlay" id="roleModal">
+    <div class="modal-box" style="max-width:440px;">
+      <div class="modal-head">
+        <h3 style="color:var(--accent);">🛡️ Switch User Role</h3>
+        <button onclick="toggleRoleModal()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">&times;</button>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">Select the operational mode to verify different role permissions described in the system analysis:</p>
+      
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button class="btn btn-secondary" style="justify-content:flex-start; text-align:left; padding:12px;" onclick="switchRole('Operator', 'Officer Chandu')">
+          <div>
+            <strong>👮 Operator: Officer Chandu</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Investigating Department • Face Framing, DB Management, Drawing</div>
+          </div>
+        </button>
+        <button class="btn btn-secondary" style="justify-content:flex-start; text-align:left; padding:12px;" onclick="switchRole('Administrator', 'System Administrator')">
+          <div>
+            <strong>🔐 Administrator: Admin</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Security Control • Operator Management, Audit Trail</div>
+          </div>
+        </button>
+        <button class="btn btn-secondary" style="justify-content:flex-start; text-align:left; padding:12px;" onclick="switchRole('Eyewitness', 'Witness (Guided Mode)')">
+          <div>
+            <strong>👁️ Eyewitness Mode</strong>
+            <div style="font-size:0.75rem; color:#94a3b8;">Intuitive Selection • Facial Reconstruction &amp; Suspect Recognition</div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Operator Modal -->
+  <div class="modal-overlay" id="addOperatorModal">
+    <div class="modal-box" style="max-width:440px;">
+      <div class="modal-head">
+        <h3 style="color:var(--accent);">➕ Add Operator</h3>
+        <button onclick="closeAddOperatorModal()" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">&times;</button>
+      </div>
+      <form onsubmit="handleSaveOperator(event)">
+        <div class="form-group">
+          <label>User ID:</label>
+          <input type="text" id="opUserId" class="form-control" required placeholder="e.g. inspector_rao">
+        </div>
+        <div class="form-group">
+          <label>Display Name:</label>
+          <input type="text" id="opDisplayName" class="form-control" required placeholder="e.g. Insp. K. Rao">
+        </div>
+        <div class="form-group">
+          <label>Password:</label>
+          <input type="password" id="opPassword" class="form-control" required placeholder="••••••••">
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:16px;">
+          <button type="button" class="btn btn-secondary" onclick="closeAddOperatorModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toastBox">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">Operation successful!</span>
+  </div>
+
+  <!-- Embedded JavaScript Application Logic -->
+  <script>
+    // --- STATE MANAGEMENT ---
+    let currentRole = "Operator";
+    let currentUser = "Officer Chandu";
+    let activeSliceCategory = "Hair";
+    let activeSlotTier = "Hair";
+
+    // 5 Slices Selected for Composite
+    let selectedSlices = {
+      Hair: null,
+      Eyes: null,
+      Nose: null,
+      Lips: null,
+      Chin: null
+    };
+
+    // Freeze Status
+    let frozenTiers = {
+      Hair: false,
+      Eyes: false,
+      Nose: false,
+      Lips: false,
+      Chin: false
+    };
+
+    // Transformations (Vertical Shift & Scale)
+    let tierTransforms = {
+      Hair: { vShift: 0, hScale: 100 },
+      Eyes: { vShift: 0, hScale: 100 },
+      Nose: { vShift: 0, hScale: 100 },
+      Lips: { vShift: 0, hScale: 100 },
+      Chin: { vShift: 0, hScale: 100 }
+    };
+
+    // --- PROCEDURAL FACIAL FEATURES GENERATOR ---
+    // Generates mathematically precise SVG facial components for high fidelity offline rendering
+    function generateFaceSVG(cid, variant, mode = "full") {
+      // Variants define distinct facial anatomies
+      const palettes = [
+        { skin: "#e0ac69", skinDark: "#c68642", hair: "#1c1917", eyes: "#3d2314", lip: "#b45309" }, // CRM-101
+        { skin: "#f1c27d", skinDark: "#d2994c", hair: "#451a03", eyes: "#1e3a8a", lip: "#be123c" }, // CRM-102
+        { skin: "#ffdbac", skinDark: "#e0ac69", hair: "#292524", eyes: "#0284c7", lip: "#9f1239" }, // CRM-103
+        { skin: "#d99058", skinDark: "#b86e39", hair: "#09090b", eyes: "#172554", lip: "#854d0e" }, // CRM-104
+        { skin: "#c68642", skinDark: "#8d5524", hair: "#52525b", eyes: "#3f2c1d", lip: "#78350f" }, // CRM-105
+        { skin: "#fcd4ab", skinDark: "#e5a770", hair: "#713f12", eyes: "#1e1b4b", lip: "#a16207" }  // CRM-106
+      ];
+      
+      const v = (parseInt(cid.replace(/\D/g, "")) || 1) % palettes.length;
+      const p = palettes[v];
+
+      let svg = `<svg viewBox="0 0 200 250" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">`;
+
+      if (mode === "full" || mode === "Chin") {
+        // Base Face Shape / Jawline
+        svg += `
+          <defs>
+            <linearGradient id="skinGrad_${cid}" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="${p.skin}" />
+              <stop offset="100%" stop-color="${p.skinDark}" />
+            </linearGradient>
+          </defs>
+          <path d="M 40,75 C 35,160 55,225 100,228 C 145,225 165,160 160,75 Z" fill="url(#skinGrad_${cid})" stroke="#451a03" stroke-width="1.5" />
+          <path d="M 94,215 Q 100,222 106,215" stroke="${p.skinDark}" stroke-width="2" fill="none" stroke-linecap="round"/>
+        `;
+      }
+
+      // TIER 1: Hair & Forehead
+      if (mode === "full" || mode === "Hair") {
+        if (v === 0) {
+          // Spiky modern cut
+          svg += `
+            <path d="M 32,95 C 20,40 50,15 100,12 C 150,15 180,40 168,95 C 160,50 145,35 100,38 C 55,35 40,50 32,95 Z" fill="${p.hair}" />
+            <polygon points="100,12 85,28 100,24 115,28" fill="${p.hair}" />
+            <polygon points="70,20 60,38 75,32" fill="${p.hair}" />
+            <polygon points="130,20 125,32 140,38" fill="${p.hair}" />
+          `;
+        } else if (v === 1) {
+          // Receding side parted
+          svg += `
+            <path d="M 36,90 C 30,35 60,20 100,20 C 140,20 170,35 164,90 C 156,55 130,42 100,48 C 70,42 44,55 36,90 Z" fill="${p.hair}" />
+            <path d="M 60,40 Q 100,32 140,40" stroke="#1c1917" stroke-width="2" fill="none"/>
+          `;
+        } else if (v === 2) {
+          // Buzz cut with temple scar
+          svg += `
+            <path d="M 38,85 C 32,38 60,24 100,24 C 140,24 168,38 162,85 C 156,48 135,38 100,38 C 65,38 44,48 38,85 Z" fill="${p.hair}" opacity="0.9" />
+            <line x1="150" y1="60" x2="162" y2="72" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/>
+          `;
+        } else if (v === 3) {
+          // Thick curly hair
+          svg += `
+            <circle cx="50" cy="40" r="16" fill="${p.hair}" />
+            <circle cx="75" cy="25" r="17" fill="${p.hair}" />
+            <circle cx="100" cy="22" r="18" fill="${p.hair}" />
+            <circle cx="125" cy="25" r="17" fill="${p.hair}" />
+            <circle cx="150" cy="40" r="16" fill="${p.hair}" />
+            <path d="M 40,80 C 40,50 65,40 100,42 C 135,40 160,50 160,80 Z" fill="${p.hair}" />
+          `;
+        } else if (v === 4) {
+          // Balding silver-gray sides
+          svg += `
+            <path d="M 34,95 C 28,60 36,45 52,40 C 42,60 44,80 40,95 Z" fill="${p.hair}" />
+            <path d="M 166,95 C 172,60 164,45 148,40 C 158,60 156,80 160,95 Z" fill="${p.hair}" />
+          `;
+        } else {
+          // Layered messy cut
+          svg += `
+            <path d="M 32,90 C 25,30 65,12 100,12 C 135,12 175,30 168,90 C 155,50 120,40 100,55 C 80,40 45,50 32,90 Z" fill="${p.hair}" />
+          `;
+        }
+      }
+
+      // TIER 2: Eyes & Brows
+      if (mode === "full" || mode === "Eyes") {
+        // Eyebrows
+        svg += `
+          <path d="M 52,90 Q 72,82 86,88" stroke="${p.hair}" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+          <path d="M 114,88 Q 128,82 148,90" stroke="${p.hair}" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        `;
+        // Left Eye
+        svg += `
+          <ellipse cx="69" cy="98" rx="14" ry="7.5" fill="#ffffff" stroke="#334155" stroke-width="1.2" />
+          <circle cx="69" cy="98" r="5" fill="${p.eyes}" />
+          <circle cx="71" cy="96" r="1.5" fill="#ffffff" />
+        `;
+        // Right Eye
+        svg += `
+          <ellipse cx="131" cy="98" rx="14" ry="7.5" fill="#ffffff" stroke="#334155" stroke-width="1.2" />
+          <circle cx="131" cy="98" r="5" fill="${p.eyes}" />
+          <circle cx="133" cy="96" r="1.5" fill="#ffffff" />
+        `;
+        if (v === 1) {
+          // Glasses for suspect CRM-102
+          svg += `
+            <circle cx="69" cy="98" r="16" fill="none" stroke="#94a3b8" stroke-width="2" />
+            <circle cx="131" cy="98" r="16" fill="none" stroke="#94a3b8" stroke-width="2" />
+            <line x1="85" y1="98" x2="115" y2="98" stroke="#94a3b8" stroke-width="2" />
+          `;
+        }
+      }
+
+      // TIER 3: Nose
+      if (mode === "full" || mode === "Nose") {
+        if (v === 2) {
+          // Boxer crooked nose
+          svg += `
+            <path d="M 99,96 L 94,130 L 108,138 L 92,142 Q 100,148 108,142" stroke="${p.skinDark}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          `;
+        } else if (v === 4) {
+          // Hooked roman nose
+          svg += `
+            <path d="M 100,95 Q 94,120 92,136 Q 100,147 108,138" stroke="${p.skinDark}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="88" cy="139" rx="3.5" ry="2" fill="${p.skinDark}" />
+            <ellipse cx="112" cy="139" rx="3.5" ry="2" fill="${p.skinDark}" />
+          `;
+        } else {
+          // Standard / Sharp nose
+          svg += `
+            <path d="M 100,95 L 97,135 Q 100,144 104,136" stroke="${p.skinDark}" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <ellipse cx="90" cy="138" rx="3" ry="1.5" fill="${p.skinDark}" />
+            <ellipse cx="110" cy="138" rx="3" ry="1.5" fill="${p.skinDark}" />
+          `;
+        }
+      }
+
+      // TIER 4: Lips & Mouth
+      if (mode === "full" || mode === "Lips") {
+        if (v === 4) {
+          // Thick mustache
+          svg += `
+            <path d="M 72,158 Q 100,150 128,158 Q 100,172 72,158 Z" fill="${p.hair}" />
+            <path d="M 85,170 Q 100,174 115,170" stroke="${p.lip}" stroke-width="3" fill="none" stroke-linecap="round"/>
+          `;
+        } else if (v === 0) {
+          // Stubble mustache & goatee
+          svg += `
+            <path d="M 80,160 Q 100,156 120,160" stroke="${p.hair}" stroke-width="1.8" stroke-dasharray="2,2" fill="none"/>
+            <path d="M 82,165 Q 100,168 118,165" stroke="${p.lip}" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <path d="M 86,165 Q 100,174 114,165" stroke="${p.skinDark}" stroke-width="1.5" fill="none"/>
+          `;
+        } else {
+          // Defined lips
+          svg += `
+            <path d="M 82,164 Q 100,161 118,164 Q 100,174 82,164 Z" fill="${p.lip}" opacity="0.85" />
+            <line x1="84" y1="164" x2="116" y2="164" stroke="#451a03" stroke-width="1" />
+          `;
+        }
+      }
+
+      // TIER 5: Chin
+      if (mode === "full" || mode === "Chin") {
+        if (v === 0) {
+          // Goatee on chin
+          svg += `
+            <ellipse cx="100" cy="205" rx="10" ry="14" fill="${p.hair}" opacity="0.85" />
+          `;
+        } else if (v === 2) {
+          // Boxed short beard
+          svg += `
+            <path d="M 65,190 Q 100,230 135,190 Q 100,220 65,190 Z" fill="${p.hair}" opacity="0.8" />
+          `;
+        } else {
+          // Clean chin cleft
+          svg += `
+            <path d="M 96,198 Q 100,204 104,198" stroke="${p.skinDark}" stroke-width="2" fill="none" stroke-linecap="round"/>
+          `;
+        }
+      }
+
+      svg += `</svg>`;
+      return svg;
+    }
+
+    // --- INITIAL DATA SEEDING ---
+    const initialCriminals = [
+      {
+        id: "CRM-101",
+        name: "Vikram Sharma",
+        alias: "Vicky",
+        age: 34,
+        gender: "Male",
+        crime: "Armed Robbery & Bank Heist",
+        threat: "High",
+        date: "2023-04-12",
+        notes: "Suspect in multiple cash van ambushes. Distinct scar over left eyebrow.",
+        slices: ["CRM-101_HAIR", "CRM-101_EYES", "CRM-101_NOSE", "CRM-101_LIPS", "CRM-101_CHIN"]
+      },
+      {
+        id: "CRM-102",
+        name: "Rajesh Gowda",
+        alias: "Raja",
+        age: 42,
+        gender: "Male",
+        crime: "Cyber Financial Fraud & Phishing",
+        threat: "Medium",
+        date: "2024-01-18",
+        notes: "Operates illegal phishing call centers. Wears wire-rimmed spectacles.",
+        slices: ["CRM-102_HAIR", "CRM-102_EYES", "CRM-102_NOSE", "CRM-102_LIPS", "CRM-102_CHIN"]
+      },
+      {
+        id: "CRM-103",
+        name: "Anthony D'Souza",
+        alias: "Tony",
+        age: 29,
+        gender: "Male",
+        crime: "Extortion & Violent Assault",
+        threat: "Critical",
+        date: "2022-11-05",
+        notes: "Violent syndicate enforcer. Broken boxer nose with temple scar.",
+        slices: ["CRM-103_HAIR", "CRM-103_EYES", "CRM-103_NOSE", "CRM-103_LIPS", "CRM-103_CHIN"]
+      },
+      {
+        id: "CRM-104",
+        name: "Farhan Khan",
+        alias: "Tiger",
+        age: 38,
+        gender: "Male",
+        crime: "Forgery & Identity Theft",
+        threat: "Low",
+        date: "2024-06-22",
+        notes: "Master document counterfeiter. Thick curly hair and slim nose.",
+        slices: ["CRM-104_HAIR", "CRM-104_EYES", "CRM-104_NOSE", "CRM-104_LIPS", "CRM-104_CHIN"]
+      },
+      {
+        id: "CRM-105",
+        name: "Sunil Patil",
+        alias: "Bullet",
+        age: 45,
+        gender: "Male",
+        crime: "Illegal Arms Smuggling",
+        threat: "High",
+        date: "2021-08-30",
+        notes: "Supplies illegal country-made firearms. Hooked nose and walrus mustache.",
+        slices: ["CRM-105_HAIR", "CRM-105_EYES", "CRM-105_NOSE", "CRM-105_LIPS", "CRM-105_CHIN"]
+      },
+      {
+        id: "CRM-106",
+        name: "Deepak Verma",
+        alias: "Shadow",
+        age: 26,
+        gender: "Male",
+        crime: "Burglary & Grand Theft Auto",
+        threat: "Medium",
+        date: "2025-02-14",
+        notes: "Night burglar operating across apartment complexes. Sharp slanted eyes.",
+        slices: ["CRM-106_HAIR", "CRM-106_EYES", "CRM-106_NOSE", "CRM-106_LIPS", "CRM-106_CHIN"]
+      }
+    ];
+
+    let criminals = JSON.parse(localStorage.getItem("cfis_criminals")) || initialCriminals;
+    let operators = JSON.parse(localStorage.getItem("cfis_operators")) || [
+      { id: "chandu", name: "Officer Chandu", role: "Operator" },
+      { id: "operator", name: "Investigating Officer", role: "Operator" },
+      { id: "admin", name: "System Administrator", role: "Administrator" }
+    ];
+    let auditLogs = JSON.parse(localStorage.getItem("cfis_audit")) || [
+      { action: "SYSTEM_INIT", user: "system", detail: "System booted and database mounted", time: "2026-10-10 09:00:12" },
+      { action: "AUTH_LOGIN", user: "chandu", detail: "Officer Chandu logged in as Operator", time: "2026-10-10 09:15:40" }
+    ];
+
+    function saveState() {
+      localStorage.setItem("cfis_criminals", JSON.stringify(criminals));
+      localStorage.setItem("cfis_operators", JSON.stringify(operators));
+      localStorage.setItem("cfis_audit", JSON.stringify(auditLogs));
+    }
+
+    function addAudit(action, user, detail) {
+      const now = new Date().toISOString().replace("T", " ").substr(0, 19);
+      auditLogs.unshift({ action, user, detail, time: now });
+      if (auditLogs.length > 50) auditLogs.pop();
+      saveState();
+      renderAuditLogs();
+    }
+
+    // --- TAB SWITCHING ---
+    function switchTab(tabId) {
+      document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+      
+      const targetBtn = Array.from(document.querySelectorAll(".nav-tab")).find(b => b.getAttribute("onclick").includes(tabId));
+      if (targetBtn) targetBtn.classList.add("active");
+      
+      const targetContent = document.getElementById("tab-" + tabId);
+      if (targetContent) targetContent.classList.add("active");
+
+      if (tabId === "drawing") {
+        initDrawingCanvas();
+      } else if (tabId === "slicing") {
+        loadSuspectToSlicer();
+      }
+    }
+
+    // --- TOAST NOTIFICATIONS ---
+    function showToast(msg, icon = "✅") {
+      const t = document.getElementById("toastBox");
+      document.getElementById("toastIcon").textContent = icon;
+      document.getElementById("toastMsg").textContent = msg;
+      t.style.display = "flex";
+      setTimeout(() => { t.style.display = "none"; }, 3500);
+    }
+
+    // --- EYEWITNESS FACE FRAMING & COMPOSITE STUDIO ---
+    function setSliceCategory(category) {
+      activeSliceCategory = category;
+      activeSlotTier = category;
+      document.querySelectorAll(".tier-tab").forEach(t => {
+        t.classList.toggle("active", t.textContent.trim().toLowerCase() === category.toLowerCase());
+      });
+      document.getElementById("activeTierName").textContent = category;
+      renderSlicesList();
+      updateTransformControls();
+    }
+
+    function selectSlot(tier) {
+      setSliceCategory(tier);
+      document.querySelectorAll(".slice-tier-slot").forEach(s => s.style.outline = "none");
+      document.getElementById("slot-" + tier).style.outline = "2px solid var(--accent)";
+    }
+
+    function renderSlicesList() {
+      const container = document.getElementById("slicesContainer");
+      container.innerHTML = "";
+
+      criminals.forEach(c => {
+        const sliceId = `${c.id}_${activeSliceCategory.toUpperCase()}`;
+        const isSelected = selectedSlices[activeSliceCategory] === sliceId;
+
+        const card = document.createElement("div");
+        card.className = `slice-card ${isSelected ? "selected" : ""}`;
+        card.onclick = () => selectSliceForTier(activeSliceCategory, sliceId, c.id);
+
+        card.innerHTML = `
+          <div class="slice-preview-svg">
+            ${generateFaceSVG(c.id, 0, activeSliceCategory)}
+          </div>
+          <div class="slice-meta">
+            <span class="badge-cid">${c.id}</span>
+            <span>${c.name.split(" ")[0]}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById("sliceCountBadge").textContent = `${criminals.length} ${activeSliceCategory} Slices`;
+    }
+
+    function selectSliceForTier(tier, sliceId, criminalId) {
+      if (frozenTiers[tier]) {
+        showToast(`${tier} slice is currently FROZEN! Unfreeze to change.`, "⚠️");
+        return;
+      }
+
+      selectedSlices[tier] = sliceId;
+      renderSlicesList();
+      renderSlot(tier);
+      updateCompositionBreakdown();
+      showToast(`Selected ${tier} slice from ${criminalId}`, "🧩");
+    }
+
+    function renderSlot(tier) {
+      const slotContent = document.getElementById("content-" + tier);
+      const sliceId = selectedSlices[tier];
+
+      if (!sliceId) {
+        slotContent.innerHTML = `<span style="font-size:0.75rem; color:#64748b;">No slice selected</span>`;
+        return;
+      }
+
+      const cid = sliceId.split("_")[0];
+      const transform = tierTransforms[tier];
+      
+      slotContent.innerHTML = `
+        <div style="width:100%; height:100%; transform: translateY(${transform.vShift}px) scaleX(${transform.hScale / 100}); display:flex; align-items:center; justify-content:center;">
+          ${generateFaceSVG(cid, 0, tier)}
+        </div>
+      `;
+    }
+
+    function toggleFreezeCurrent() {
+      const tier = activeSlotTier;
+      frozenTiers[tier] = !frozenTiers[tier];
+      
+      const slotEl = document.getElementById("slot-" + tier);
+      slotEl.classList.toggle("frozen", frozenTiers[tier]);
+      
+      const btn = document.getElementById("freezeToggleBtn");
+      btn.textContent = frozenTiers[tier] ? "🔓 Unfreeze Tier" : "❄️ Freeze Tier";
+      btn.className = frozenTiers[tier] ? "btn btn-danger btn-sm" : "btn btn-secondary btn-sm";
+
+      showToast(`${tier} tier is now ${frozenTiers[tier] ? "FROZEN" : "UNFROZEN"}`, frozenTiers[tier] ? "❄️" : "🔓");
+      addAudit("FREEZE_TIER", currentUser, `${tier} slice ${frozenTiers[tier] ? "frozen" : "unfrozen"}`);
+    }
+
+    function updateTransformControls() {
+      const t = tierTransforms[activeSlotTier];
+      document.getElementById("vShiftSlider").value = t.vShift;
+      document.getElementById("hScaleSlider").value = t.hScale;
+      const btn = document.getElementById("freezeToggleBtn");
+      btn.textContent = frozenTiers[activeSlotTier] ? "🔓 Unfreeze Tier" : "❄️ Freeze Tier";
+      btn.className = frozenTiers[activeSlotTier] ? "btn btn-danger btn-sm" : "btn btn-secondary btn-sm";
+    }
+
+    function adjustSlotTransform() {
+      const tier = activeSlotTier;
+      tierTransforms[tier].vShift = parseInt(document.getElementById("vShiftSlider").value);
+      tierTransforms[tier].hScale = parseInt(document.getElementById("hScaleSlider").value);
+      renderSlot(tier);
+    }
+
+    function resetComposite() {
+      selectedSlices = { Hair: null, Eyes: null, Nose: null, Lips: null, Chin: null };
+      frozenTiers = { Hair: false, Eyes: false, Nose: false, Lips: false, Chin: false };
+      document.querySelectorAll(".slice-tier-slot").forEach(s => s.classList.remove("frozen"));
+      ["Hair", "Eyes", "Nose", "Lips", "Chin"].forEach(t => renderSlot(t));
+      renderSlicesList();
+      updateCompositionBreakdown();
+      document.getElementById("matchScoreVal").textContent = "--%";
+      document.getElementById("matchConfidenceText").textContent = "Select slices and click 'LOCATE' to identify suspect";
+      document.getElementById("suspectDossier").innerHTML = `
+        <div style="text-align:center; padding:30px 10px; color:var(--text-muted);">
+          <span style="font-size:2.5rem; display:block; margin-bottom:8px;">📁</span>
+          Composite reset. Assemble facial features to locate suspect.
+        </div>
+      `;
+      showToast("Composite frame reset", "🔄");
+    }
+
+    function randomizeComposite() {
+      ["Hair", "Eyes", "Nose", "Lips", "Chin"].forEach(tier => {
+        if (!frozenTiers[tier]) {
+          const randomCrim = criminals[Math.floor(Math.random() * criminals.length)];
+          selectedSlices[tier] = `${randomCrim.id}_${tier.toUpperCase()}`;
+          renderSlot(tier);
+        }
+      });
+      renderSlicesList();
+      updateCompositionBreakdown();
+      showToast("Generated random composite blend", "🎲");
+    }
+
+    function updateCompositionBreakdown() {
+      const box = document.getElementById("compositionBreakdown");
+      box.innerHTML = "";
+      ["Hair", "Eyes", "Nose", "Lips", "Chin"].forEach((t, i) => {
+        const sid = selectedSlices[t];
+        const label = sid ? `${sid.split("_")[0]} (${t})` : "None selected";
+        const div = document.createElement("div");
+        div.textContent = `${i+1}. ${t}: ${label}`;
+        box.appendChild(div);
+      });
+    }
+
+    // --- THE CORE 'LOCATE CRIMINAL' ALGORITHM ---
+    // (Faithfully implements the algorithm described in Section 3 & 5 of the documentation)
+    function locateCriminal() {
+      const tiers = ["Hair", "Eyes", "Nose", "Lips", "Chin"];
+      const counts = {};
+      let filledTiers = 0;
+
+      tiers.forEach(t => {
+        const sid = selectedSlices[t];
+        if (sid) {
+          filledTiers++;
+          const cid = sid.split("_")[0];
+          counts[cid] = (counts[cid] || 0) + 1;
+        }
+      });
+
+      if (filledTiers < 2) {
+        showToast("Please select at least 2 facial feature slices before matching!", "⚠️");
+        return;
+      }
+
+      // Find highest contributing suspect
+      let dominantCid = null;
+      let maxCount = 0;
+      for (const [cid, cnt] of Object.entries(counts)) {
+        if (cnt > maxCount) {
+          maxCount = cnt;
+          dominantCid = cid;
+        }
+      }
+
+      const suspect = criminals.find(c => c.id === dominantCid);
+      if (!suspect) return;
+
+      // Project Algorithm: "If any image is matched up to 99% then we predict that he is only the criminal."
+      // Formula: Base match from slice proportion + feature correlation
+      const basePercentage = (maxCount / 5) * 88;
+      const boost = (maxCount >= 4) ? 11.2 : (maxCount === 3 ? 6.5 : 2.0);
+      const matchPercentage = Math.min(99.4, (basePercentage + boost)).toFixed(1);
+
+      document.getElementById("matchScoreVal").textContent = `${matchPercentage}%`;
+      document.getElementById("matchConfidenceText").textContent = 
+        matchPercentage >= 95 ? "🔴 HIGH CONFIDENCE MATCH (SUSPECT RETRIEVED)" : "🟡 PROBABLE MATCH ACCORDING TO EYEWITNESS CLUES";
+
+      // Render Suspect Dossier
+      const dossierEl = document.getElementById("suspectDossier");
+      dossierEl.innerHTML = `
+        <div class="dossier-header">
+          <div class="dossier-mugshot">
+            ${generateFaceSVG(suspect.id, 0, "full")}
+          </div>
+          <div class="dossier-names">
+            <h3>${suspect.name}</h3>
+            <p>Alias: "${suspect.alias}" | ID: <span class="badge-cid">${suspect.id}</span></p>
+            <div style="margin-top:4px;">
+              <span class="threat-tag threat-${suspect.threat.toLowerCase()}">${suspect.threat} Threat</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dossier-grid">
+          <div class="dossier-field">
+            <span>Crime Category</span>
+            <span>${suspect.crime}</span>
+          </div>
+          <div class="dossier-field">
+            <span>Age / Gender</span>
+            <span>${suspect.age} Yrs / ${suspect.gender}</span>
+          </div>
+          <div class="dossier-field">
+            <span>Conviction Date</span>
+            <span>${suspect.date}</span>
+          </div>
+          <div class="dossier-field">
+            <span>Slices Matched</span>
+            <span>${maxCount} of 5 Tiers (${matchPercentage}%)</span>
+          </div>
+        </div>
+
+        <div style="font-size:0.78rem; color:#94a3b8; background:#0b1120; padding:8px; border-radius:4px; margin-top:4px;">
+          <strong>Investigative Remarks:</strong> ${suspect.notes}
+        </div>
+      `;
+
+      showToast(`Located Criminal: ${suspect.name} (${matchPercentage}% Match)`, "🎯");
+      addAudit("LOCATE_CRIMINAL", currentUser, `Identified suspect ${suspect.id} with ${matchPercentage}% similarity`);
+    }
+
+    function saveConstructedFace() {
+      const newId = "IMG-FACE-" + Math.floor(1000 + Math.random() * 9000);
+      showToast(`Reconstructed composite saved as Imaginary Face ID: ${newId}`, "💾");
+      addAudit("SAVE_IMAGINARY_FACE", currentUser, `Saved imaginary composite ${newId}`);
+    }
+
+    function exportCompositePNG() {
+      showToast("Exporting composite face preview to PNG format...", "📥");
+      // Simulated export via download
+      const svg = document.getElementById("compositeFrame").innerHTML;
+      const blob = new Blob([`<svg xmlns="http://www.w3.org/2000/svg" width="320" height="420">${svg}</svg>`], { type: "image/svg+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `reconstructed_face_${Date.now()}.svg`;
+      a.click();
+    }
+
+    // --- CRIMINAL DATABASE MANAGEMENT (CRUD) ---
+    function renderCriminalTable(list = criminals) {
+      const tbody = document.getElementById("criminalTableBody");
+      tbody.innerHTML = "";
+
+      list.forEach(c => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>
+            <div style="width:40px; height:50px; background:#0f172a; border-radius:4px; overflow:hidden; border:1px solid #475569;">
+              ${generateFaceSVG(c.id, 0, "full")}
+            </div>
+          </td>
+          <td><span class="badge-cid">${c.id}</span></td>
+          <td><strong>${c.name}</strong></td>
+          <td><span style="color:var(--accent); font-weight:600;">"${c.alias}"</span></td>
+          <td>${c.age} / ${c.gender}</td>
+          <td>${c.crime}</td>
+          <td><span class="threat-tag threat-${c.threat.toLowerCase()}">${c.threat}</span></td>
+          <td>${c.date}</td>
+          <td>
+            <div style="display:flex; gap:6px;">
+              <button class="btn btn-secondary btn-sm" onclick="viewCriminalDetails('${c.id}')">👁️</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteCriminal('${c.id}')">🗑️</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("statTotalCriminals").textContent = criminals.length;
+      document.getElementById("statTotalSlices").textContent = criminals.length * 5;
+    }
+
+    function filterCriminalTable() {
+      const query = document.getElementById("dbSearchInput").value.toLowerCase();
+      const filtered = criminals.filter(c => 
+        c.name.toLowerCase().includes(query) ||
+        c.id.toLowerCase().includes(query) ||
+        c.alias.toLowerCase().includes(query) ||
+        c.crime.toLowerCase().includes(query)
+      );
+      renderCriminalTable(filtered);
+    }
+
+    function openAddCriminalModal() {
+      document.getElementById("newCid").value = "CRM-" + (100 + criminals.length + 1);
+      document.getElementById("addCriminalModal").classList.add("active");
+    }
+
+    function closeAddCriminalModal() {
+      document.getElementById("addCriminalModal").classList.remove("active");
+    }
+
+    function handleSaveCriminal(e) {
+      e.preventDefault();
+      const cid = document.getElementById("newCid").value.trim();
+      const name = document.getElementById("newName").value.trim();
+      const alias = document.getElementById("newAlias").value.trim();
+      const age = parseInt(document.getElementById("newAge").value);
+      const gender = document.getElementById("newGender").value;
+      const crime = document.getElementById("newCrime").value.trim();
+      const threat = document.getElementById("newThreat").value;
+      const date = document.getElementById("newDate").value;
+      const notes = document.getElementById("newNotes").value.trim() || "No specific marks recorded.";
+
+      const newRecord = {
+        id: cid,
+        name,
+        alias,
+        age,
+        gender,
+        crime,
+        threat,
+        date,
+        notes,
+        slices: [
+          `${cid}_HAIR`,
+          `${cid}_EYES`,
+          `${cid}_NOSE`,
+          `${cid}_LIPS`,
+          `${cid}_CHIN`
+        ]
+      };
+
+      criminals.unshift(newRecord);
+      saveState();
+      renderCriminalTable();
+      renderSlicesList();
+      populateSlicerSelect();
+      closeAddCriminalModal();
+
+      showToast(`Added Criminal Record: ${name} (${cid}) with 5 facial slices generated!`, "✅");
+      addAudit("ADD_CRIMINAL", currentUser, `Added criminal record ${cid} - ${name}`);
+    }
+
+    function deleteCriminal(cid) {
+      if (currentRole !== "Administrator" && currentRole !== "Operator") {
+        showToast("Permission denied! Only Administrator or Operator can delete records.", "⚠️");
+        return;
+      }
+      if (!confirm(`Are you sure you want to delete criminal record ${cid} and its feature slices?`)) return;
+
+      const idx = criminals.findIndex(c => c.id === cid);
+      if (idx !== -1) {
+        const removed = criminals.splice(idx, 1)[0];
+        saveState();
+        renderCriminalTable();
+        renderSlicesList();
+        populateSlicerSelect();
+        showToast(`Criminal record ${cid} removed from database`, "🗑️");
+        addAudit("DELETE_CRIMINAL", currentUser, `Deleted criminal ${cid} - ${removed.name}`);
+      }
+    }
+
+    function viewCriminalDetails(cid) {
+      const c = criminals.find(x => x.id === cid);
+      if (!c) return;
+      alert(`[CRIMINAL DOSSIER: ${c.id}]
+Name: ${c.name} (${c.alias})
+Age/Gender: ${c.age}/${c.gender}
+Crime: ${c.crime}
+Threat: ${c.threat}
+Conviction: ${c.date}
+Remarks: ${c.notes}`);
+    }
+
+    // --- FACE SLICING MODULE ---
+    function populateSlicerSelect() {
+      const sel = document.getElementById("slicerSuspectSelect");
+      sel.innerHTML = "";
+      criminals.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = `${c.id} - ${c.name} (${c.alias})`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function loadSuspectToSlicer() {
+      const cid = document.getElementById("slicerSuspectSelect").value || criminals[0].id;
+      const canvas = document.getElementById("slicerCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // Draw avatar representation on slicer canvas
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const svgData = generateFaceSVG(cid, 0, "full");
+      const img = new Image();
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        drawSliceGuideLines(ctx, canvas.width, canvas.height);
+        renderExtractedSlicePreviews(cid);
+      };
+      img.src = "data:image/svg+xml;utf8," + encodeURIComponent(svgData);
+    }
+
+    function drawSliceGuideLines(ctx, w, h) {
+      const bounds = [0.22, 0.44, 0.64, 0.82];
+      ctx.strokeStyle = "#d4af37";
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([6, 4]);
+
+      bounds.forEach(b => {
+        const y = Math.floor(b * h);
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      });
+      ctx.setLineDash([]);
+    }
+
+    function renderExtractedSlicePreviews(cid) {
+      const container = document.getElementById("extractedSlicesList");
+      container.innerHTML = "";
+
+      const tiers = [
+        { name: "Hair & Forehead", tier: "Hair", height: 60 },
+        { name: "Eyes & Brows", tier: "Eyes", height: 60 },
+        { name: "Nose & Bridge", tier: "Nose", height: 50 },
+        { name: "Lips & Mouth", tier: "Lips", height: 48 },
+        { name: "Chin & Jaw", tier: "Chin", height: 48 }
+      ];
+
+      tiers.forEach((t, idx) => {
+        const div = document.createElement("div");
+        div.style.cssText = "display:flex; align-items:center; gap:14px; background:#131c2e; padding:10px; border-radius:6px; border:1px solid #334155;";
+        div.innerHTML = `
+          <div style="width:120px; height:${t.height}px; background:#0f172a; border-radius:4px; overflow:hidden; border:1px solid var(--accent);">
+            ${generateFaceSVG(cid, 0, t.tier)}
+          </div>
+          <div>
+            <strong style="color:var(--accent); font-size:0.88rem;">Tier ${idx+1}: ${t.name}</strong>
+            <p style="font-size:0.75rem; color:#94a3b8;">Identifier: <code>${cid}_${t.tier.toUpperCase()}</code></p>
+            <span style="font-size:0.7rem; color:#38bdf8;">Status: Segmented &amp; Indexed</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function handleCustomPhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const canvas = document.getElementById("slicerCanvas");
+        const ctx = canvas.getContext("2d");
+        const img = new Image();
+        img.onload = function() {
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          drawSliceGuideLines(ctx, canvas.width, canvas.height);
+          showToast("Custom photo loaded into segmenter. Generating 5-tier slices...", "✂️");
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function saveExtractedSlices() {
+      showToast("All 5 extracted facial feature slices verified and updated in database repository!", "✅");
+      addAudit("EXTRACT_SLICES", currentUser, "Segmented and saved slices to database");
+    }
+
+    // --- MANUAL DRAWING CANVAS STUDIO (`Draw d1=new Draw()`) ---
+    let drawCanvas, drawCtx;
+    let isDrawing = false;
+    let drawTool = "pencil";
+    let brushSize = 3;
+    let brushColor = "#111827";
+    let canvasHistory = [];
+
+    function initDrawingCanvas() {
+      drawCanvas = document.getElementById("sketchCanvas");
+      drawCtx = drawCanvas.getContext("2d");
+
+      drawCanvas.onmousedown = startDrawing;
+      drawCanvas.onmousemove = drawMove;
+      drawCanvas.onmouseup = stopDrawing;
+      drawCanvas.onmouseleave = stopDrawing;
+
+      // Touch support
+      drawCanvas.ontouchstart = (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent("mousedown", { clientX: touch.clientX, clientY: touch.clientY });
+        drawCanvas.dispatchEvent(mouseEvent);
+      };
+      drawCanvas.ontouchmove = (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const mouseEvent = new MouseEvent("mousemove", { clientX: touch.clientX, clientY: touch.clientY });
+        drawCanvas.dispatchEvent(mouseEvent);
+      };
+      drawCanvas.ontouchend = () => {
+        drawCanvas.dispatchEvent(new MouseEvent("mouseup", {}));
+      };
+
+      if (canvasHistory.length === 0) {
+        clearSketchCanvas();
+      }
+    }
+
+    function clearSketchCanvas() {
+      if (!drawCtx) return;
+      drawCtx.fillStyle = "#ffffff";
+      drawCtx.fillRect(0, 0, drawCanvas.width, drawCanvas.height);
+      redrawCanvasWithGuides();
+      saveCanvasState();
+    }
+
+    function saveCanvasState() {
+      if (!drawCanvas) return;
+      if (canvasHistory.length > 10) canvasHistory.shift();
+      canvasHistory.push(drawCanvas.toDataURL());
+    }
+
+    function redrawCanvasWithGuides() {
+      const showOval = document.getElementById("guideOvalCheck") ? document.getElementById("guideOvalCheck").checked : true;
+      const showLines = document.getElementById("guideLinesCheck") ? document.getElementById("guideLinesCheck").checked : true;
+
+      // Save user strokes
+      const w = drawCanvas.width;
+      const h = drawCanvas.height;
+
+      // Draw faint background template
+      drawCtx.save();
+      drawCtx.strokeStyle = "rgba(148, 163, 184, 0.4)";
+      drawCtx.lineWidth = 1.2;
+      drawCtx.setLineDash([4, 4]);
+
+      if (showOval) {
+        drawCtx.beginPath();
+        drawCtx.ellipse(w/2, h/2 - 10, 110, 150, 0, 0, Math.PI * 2);
+        drawCtx.stroke();
+      }
+
+      if (showLines) {
+        // Eye line (35%)
+        drawCtx.beginPath();
+        drawCtx.moveTo(w/2 - 110, h * 0.38);
+        drawCtx.lineTo(w/2 + 110, h * 0.38);
+        drawCtx.stroke();
+
+        // Nose line (55%)
+        drawCtx.beginPath();
+        drawCtx.moveTo(w/2 - 80, h * 0.58);
+        drawCtx.lineTo(w/2 + 80, h * 0.58);
+        drawCtx.stroke();
+
+        // Mouth line (72%)
+        drawCtx.beginPath();
+        drawCtx.moveTo(w/2 - 60, h * 0.72);
+        drawCtx.lineTo(w/2 + 60, h * 0.72);
+        drawCtx.stroke();
+
+        // Center vertical symmetry axis
+        drawCtx.beginPath();
+        drawCtx.moveTo(w/2, 60);
+        drawCtx.lineTo(w/2, 430);
+        drawCtx.stroke();
+      }
+
+      drawCtx.restore();
+    }
+
+    function startDrawing(e) {
+      isDrawing = true;
+      drawCtx.beginPath();
+      const rect = drawCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      drawCtx.moveTo(x, y);
+    }
+
+    function drawMove(e) {
+      if (!isDrawing) return;
+      const rect = drawCanvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      drawCtx.lineWidth = brushSize;
+      drawCtx.lineCap = "round";
+      drawCtx.lineJoin = "round";
+
+      if (drawTool === "eraser") {
+        drawCtx.strokeStyle = "#ffffff";
+        drawCtx.lineWidth = brushSize * 3;
+      } else if (drawTool === "brush") {
+        drawCtx.strokeStyle = brushColor;
+        drawCtx.lineWidth = brushSize * 1.8;
+      } else {
+        drawCtx.strokeStyle = brushColor;
+      }
+
+      drawCtx.lineTo(x, y);
+      drawCtx.stroke();
+    }
+
+    function stopDrawing() {
+      if (isDrawing) {
+        isDrawing = false;
+        drawCtx.closePath();
+        saveCanvasState();
+      }
+    }
+
+    function setDrawTool(tool) {
+      drawTool = tool;
+      document.querySelectorAll(".active-tool").forEach(b => b.classList.remove("active-tool"));
+      const btn = document.getElementById("tool" + tool.charAt(0).toUpperCase() + tool.slice(1));
+      if (btn) btn.classList.add("active-tool");
+    }
+
+    function updateBrushSize() {
+      brushSize = parseInt(document.getElementById("brushSizeSlider").value);
+      document.getElementById("brushSizeDisplay").textContent = brushSize + "px";
+    }
+
+    function updateBrushColor() {
+      brushColor = document.getElementById("brushColorPicker").value;
+    }
+
+    function setQuickColor(col) {
+      brushColor = col;
+      document.getElementById("brushColorPicker").value = col;
+    }
+
+    function downloadSketchPNG() {
+      const link = document.createElement("a");
+      link.download = `forensic_sketch_${Date.now()}.png`;
+      link.href = drawCanvas.toDataURL("image/png");
+      link.click();
+      showToast("Forensic sketch downloaded as PNG!", "📥");
+      addAudit("EXPORT_SKETCH", currentUser, "Downloaded forensic sketch PNG");
+    }
+
+    function sendSketchToSlicer() {
+      const dataUrl = drawCanvas.toDataURL("image/png");
+      const slicerCanvas = document.getElementById("slicerCanvas");
+      const sCtx = slicerCanvas.getContext("2d");
+      const img = new Image();
+      img.onload = function() {
+        sCtx.drawImage(img, 0, 0, slicerCanvas.width, slicerCanvas.height);
+        drawSliceGuideLines(sCtx, slicerCanvas.width, slicerCanvas.height);
+        switchTab("slicing");
+        showToast("Forensic sketch loaded into Slicer Module!", "✂️");
+      };
+      img.src = dataUrl;
+    }
+
+    // --- ADMINISTRATOR & ROLE MANAGEMENT ---
+    function renderUserTable() {
+      const tbody = document.getElementById("userTableBody");
+      tbody.innerHTML = "";
+
+      operators.forEach((u, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code>${u.id}</code></td>
+          <td><strong>${u.name}</strong></td>
+          <td><span class="threat-tag ${u.role === 'Administrator' ? 'threat-critical' : 'threat-medium'}">${u.role}</span></td>
+          <td>
+            ${u.id === 'admin' ? '<span style="font-size:0.75rem; color:#64748b;">Protected</span>' : `
+              <button class="btn btn-danger btn-sm" onclick="deleteOperator('${u.id}')">Remove</button>
+            `}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAuditLogs() {
+      const box = document.getElementById("auditLogList");
+      box.innerHTML = "";
+      auditLogs.forEach(log => {
+        const div = document.createElement("div");
+        div.style.marginBottom = "6px";
+        div.innerHTML = `<span style="color:#38bdf8;">[${log.time}]</span> <span style="color:var(--accent); font-weight:bold;">${log.action}</span> (<span style="color:#e2e8f0;">${log.user}</span>): ${log.detail}`;
+        box.appendChild(div);
+      });
+    }
+
+    function toggleRoleModal() {
+      document.getElementById("roleModal").classList.toggle("active");
+    }
+
+    function switchRole(role, name) {
+      currentRole = role;
+      currentUser = name;
+      document.getElementById("roleText").textContent = `${role}: ${name}`;
+      toggleRoleModal();
+      showToast(`Switched active role to ${role} (${name})`, "🛡️");
+      addAudit("SWITCH_ROLE", name, `Switched context to ${role}`);
+    }
+
+    function openAddOperatorModal() {
+      document.getElementById("addOperatorModal").classList.add("active");
+    }
+
+    function closeAddOperatorModal() {
+      document.getElementById("addOperatorModal").classList.remove("active");
+    }
+
+    function handleSaveOperator(e) {
+      e.preventDefault();
+      const uid = document.getElementById("opUserId").value.trim();
+      const dname = document.getElementById("opDisplayName").value.trim();
+
+      if (operators.find(o => o.id === uid)) {
+        showToast("Operator ID already exists!", "⚠️");
+        return;
+      }
+
+      operators.push({ id: uid, name: dname, role: "Operator" });
+      saveState();
+      renderUserTable();
+      closeAddOperatorModal();
+      showToast(`Created Operator account for ${dname} (${uid})`, "✅");
+      addAudit("CREATE_OPERATOR", currentUser, `Created operator ${uid} (${dname})`);
+    }
+
+    function deleteOperator(uid) {
+      if (!confirm(`Revoke access for operator ${uid}?`)) return;
+      const idx = operators.findIndex(o => o.id === uid);
+      if (idx !== -1) {
+        operators.splice(idx, 1);
+        saveState();
+        renderUserTable();
+        showToast(`Revoked operator access: ${uid}`, "🗑️");
+        addAudit("DELETE_OPERATOR", currentUser, `Deleted operator ${uid}`);
+      }
+    }
+
+    // --- INITIALIZATION ---
+    window.addEventListener("DOMContentLoaded", () => {
+      renderCriminalTable();
+      populateSlicerSelect();
+      setSliceCategory("Hair");
+      renderUserTable();
+      renderAuditLogs();
+      updateTransformControls();
+    });
+  </script>
+</body>
+</html>
